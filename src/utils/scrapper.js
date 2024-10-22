@@ -8,9 +8,10 @@ const scrapper = async (startUrl) => {
 
   try {
     await page.setViewport({ width: 1080, height: 1024 })
-    await page.goto(startUrl, { waitUntil: 'domcontentloaded' })
+    await page.goto(startUrl, { waitUntil: 'load' })
     //rechazar cookies
-    await page.$eval("#truste-consent-required", (el)=>el.click())
+    const buttonCookies = await page.$("#truste-consent-required");
+    if (buttonCookies){await page.$eval("#truste-consent-required", (el)=>el.click())}
     
     //obtener numero total de paginas
     const lastPage = await page.$$eval(
